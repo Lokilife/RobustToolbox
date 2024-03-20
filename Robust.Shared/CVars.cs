@@ -184,6 +184,30 @@ namespace Robust.Shared
             CVarDef.Create("net.pvs", true, CVar.ARCHIVE | CVar.REPLICATED | CVar.SERVER);
 
         /// <summary>
+        /// Size increments for the automatic growth of Pvs' entity data storage. 0 will increase it by factors of 2
+        /// </summary>
+        public static readonly CVarDef<int> NetPvsEntityGrowth =
+            CVarDef.Create("net.pvs_entity_growth", 1 << 16, CVar.ARCHIVE | CVar.SERVERONLY);
+
+        /// <summary>
+        /// Initial size of PVS' entity data storage.
+        /// </summary>
+        public static readonly CVarDef<int> NetPvsEntityInitial =
+            CVarDef.Create("net.pvs_entity_initial", 1 << 16, CVar.ARCHIVE | CVar.SERVERONLY);
+
+        /// <summary>
+        /// Maximum ever size of PVS' entity data storage.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Arbitrarily set to a default of 16 million entities.
+        /// Increasing this parameter does not increase real memory usage, only virtual.
+        /// </para>
+        /// </remarks>
+        public static readonly CVarDef<int> NetPvsEntityMax =
+            CVarDef.Create("net.pvs_entity_max", 1 << 24, CVar.ARCHIVE | CVar.SERVERONLY);
+
+        /// <summary>
         /// If false, this will run more parts of PVS synchronously. This will generally slow it down, can be useful
         /// for collecting tick timing metrics.
         /// </summary>
@@ -1031,6 +1055,12 @@ namespace Robust.Shared
          * AUDIO
          */
 
+        /// <summary>
+        /// Default limit for concurrently playing an audio file.
+        /// </summary>
+        public static readonly CVarDef<int> AudioDefaultConcurrent =
+            CVarDef.Create("audio.default_concurrent", 16, CVar.CLIENTONLY | CVar.ARCHIVE);
+
         public static readonly CVarDef<int> AudioAttenuation =
             CVarDef.Create("audio.attenuation", (int) Attenuation.LinearDistanceClamped, CVar.REPLICATED | CVar.ARCHIVE);
 
@@ -1498,7 +1528,7 @@ namespace Robust.Shared
         /// Maximum compressed size of a replay recording (in kilobytes) before recording automatically stops.
         /// </summary>
         public static readonly CVarDef<long> ReplayMaxCompressedSize = CVarDef.Create("replay.max_compressed_size",
-            1024L * 256, CVar.ARCHIVE);
+            1024L * 512, CVar.ARCHIVE);
 
         /// <summary>
         /// Maximum uncompressed size of a replay recording (in kilobytes) before recording automatically stops.
