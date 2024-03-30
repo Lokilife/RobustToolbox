@@ -1,4 +1,4 @@
-﻿# Release notes for RobustToolbox.
+# Release notes for RobustToolbox.
 
 <!--
 NOTE: automatically updated sometimes by version.py.
@@ -39,11 +39,11 @@ END TEMPLATE-->
 
 ### New features
 
-*None yet*
+* Added `IRobustRandom.GetItems` extension methods for randomly picking multiple items from a collections.
 
 ### Bugfixes
 
-*None yet*
+* Fix `MapComponent.LightingEnabled` not leaving FOV rendering in a broken state.
 
 ### Other
 
@@ -51,7 +51,125 @@ END TEMPLATE-->
 
 ### Internal
 
-*None yet*
+* `Shuffle<T>(Span<T>, System.Random)` has been removed, just use the builtin method.
+
+
+## 217.0.0
+
+### Breaking changes
+
+* TransformSystem.SetWorldPosition and SetWorldPositionRotation will now also perform parent updates as necessary. Previously it would just set the entity's LocalPosition which may break if they were inside of a container. Now they will be removed from their container and TryFindGridAt will run to correctly parent them to the new position. If the old functionality is desired then you can use GetInvWorldMatrix to update the LocalPosition (bearing in mind containers may prevent this).
+
+### New features
+
+* Implement VV for AudioParams on SoundSpecifiers.
+* Add AddUi to the shared UI system.
+
+### Bugfixes
+
+* Fix the first measure of ScrollContainer bars.
+
+
+## 216.0.0
+
+### Breaking changes
+
+* The `net.low_lod_distance` cvar has been replaced with a new `net.pvs_priority_range`. Instead of limiting the range at which all entities are sent to a player, it now extends the range at which high priorities can be sent. The default value of this new cvar is 32.5, which is larger than the default `net.pvs_range` value of 25.
+
+### New features
+
+* You can now specify a component to not be saved to map files with `[UnsavedComponent]`.
+* Added `ITileDefinitionManager.TryGetDefinition`.
+* The map loader now tries to preserve the `tilemap` contents of map files, which should reduce diffs when re-saving a map after the game's internal tile IDs have changed.
+
+### Bugfixes
+
+* Fix buffered audio sources not being disposed.
+
+
+## 215.3.1
+
+### Bugfixes
+
+* Revert zstd update.
+
+
+## 215.3.0
+
+### New features
+
+* `EntityQuery<T>` now has `HasComp` and `TryComp` methods that are shorter than its existing ones.
+* Added `PlacementInformation.UseEditorContext`.
+* Added `Vector2Helpers` functions for comparing ranges between vectors.
+
+### Bugfixes
+
+* `Texture.GetPixel()`: fixed off-by-one with Y coordinate.
+* `Texture.GetPixel()`: fix stack overflow when reading large images.
+* `Texture.GetPixel()`: use more widely compatible OpenGL calls.
+
+### Other
+
+* Disabled `net.mtu_expand` again by default, as it was causing issues.
+* Updated `SharpZstd` dependency.
+
+
+## 215.2.0
+
+### New features
+
+* Implement basic VV for SoundSpecifiers.
+
+### Bugfixes
+
+* Fix QueueDel during EndCollideEvents from throwing while removing contacts.
+
+
+## 215.1.0
+
+### New features
+
+* Add a CompletionHelper for audio filepaths that handles server packaging.
+* Add Random.NextAngle(min, max) method and Pick for `ValueList<T>`.
+* Added an `ICommonSession` parser for toolshed commands.
+
+### Bugfixes
+
+
+## 215.0.0
+
+### Breaking changes
+
+* Update Lidgren to 0.3.0
+
+### New features
+
+* Made a new `IMetricsManager` interface with an `UpdateMetrics` event that can be used to update Prometheus metrics whenever they are scraped.
+  * Also added a `metrics.update_interval` CVar to go along with this, when metrics are scraped without usage of Prometheus directly.
+* IoC now contains an `IMeterFactory` implementation that you can use to instantiate metric meters.
+* `net.mtu_ipv6` CVar allows specifying a different MTU value for IPv6.
+* Allows `player:entity` to take a parameter representing the player name.
+* Add collection parsing to the dev window for UI.
+* Add a debug assert to Dirty(uid, comp) to catch mismatches being passed in.
+
+### Bugfixes
+
+* Support transform states with unknown parents.
+* Fix serialization error logging.
+* Fix naming of ResizableMemoryRegion metrics.
+* Fix uncaught overflow exception when parsing NetEntities.
+
+### Other
+
+* The replay system now allows loading a replay with a mismatching serializer type hash. This means replays should be more robust against future version updates (engine security patches or .NET updates).
+* `CheckBox`'s interior texture is now vertically centered.
+* Lidgren.Network has been updated to [`v0.3.0`](https://github.com/space-wizards/SpaceWizards.Lidgren.Network/blob/v0.3.0/RELEASE-NOTES.md).
+* Lowered default IPv4 MTU to 900 (from 1000).
+* Automatic MTU expansion (`net.mtu_expand`) is now enabled by default.
+
+### Internal
+
+* Cleanup some Dirty component calls internally.
 
 
 ## 214.2.0
