@@ -39,15 +39,55 @@ END TEMPLATE-->
 
 ### New features
 
-* Added `IRobustRandom.GetItems` extension methods for randomly picking multiple items from a collections.
+*None yet*
 
 ### Bugfixes
 
-* Fix `MapComponent.LightingEnabled` not leaving FOV rendering in a broken state.
+*None yet*
 
 ### Other
 
 *None yet*
+
+### Internal
+
+*None yet*
+
+
+## 217.2.1
+
+### Bugfixes
+
+* Fix LineEdit tests on engine.
+
+### Internal
+
+* Make various ValueList enumerators access the span directly for performance.
+
+
+## 217.2.0
+
+### New features
+
+* Added `AddComponents` and `RemoveComponents` methods to EntityManager that handle EntityPrototype / ComponentRegistry bulk component changes. 
+* Add double-clicking to LineEdit.
+
+### Bugfixes
+
+* Properly ignore non-hard fixtures for IntersectRayWithPredicate.
+* Fix nullable TimeSpan addition on some platforms.
+
+
+## 217.1.0
+
+### New features
+
+* Added `IRobustRandom.GetItems` extension methods for randomly picking multiple items from a collections.
+* Added `SharedPhysicsSystem.EffectiveCurTime`. This is effectively a variation of `IGameTiming.CurTime` that takes into account the current physics sub-step.
+
+### Bugfixes
+
+* Fix `MapComponent.LightingEnabled` not leaving FOV rendering in a broken state.
 
 ### Internal
 
